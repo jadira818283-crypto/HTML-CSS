@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="kk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML және CSS Толық Курсы</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-gray-800/90 backdrop-blur border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                        <i class="fa-solid me-0 fa-code text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg sm:text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">WebDev Курс</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 block -mt-1">HTML5 & CSS3 Теория + Практика</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button id="themeToggle" class="p-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                        <i class="fa-solid fa-sun text-lg hidden dark:block text-amber-400"></i>
+                    </button>
+                    <a href="#editor-section" class="px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition shadow-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span class="hidden sm:inline">Редактор</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-3 space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm sticky top-24">
+                <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">Курс Модульдері</h2>
+                <nav id="moduleList" class="space-y-1">
+                    <!-- Modules inserted dynamically -->
+                </nav>
+
+                <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button id="quizNavBtn" onclick="openQuiz()" class="w-full py-2.5 px-3 rounded-xl text-left font-medium text-sm flex items-center space-x-3 bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        <span>Теориялық Тест (15)</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Display Content Area -->
+        <main class="lg:col-span-9 space-y-8">
+            
+            <!-- Module Content Viewer -->
+            <article id="contentViewer" class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-sm transition-all">
+                <!-- Module Details Dynamic Insertion -->
+            </article>
+
+            <!-- Live Code Editor Section -->
+            <section id="editor-section" class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                <div class="bg-gray-100 dark:bg-gray-750 px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-code text-blue-600 dark:text-blue-400"></i>
+                        <h3 class="font-bold text-gray-800 dark:text-white">Онлайн HTML/CSS Интерактивті Редактор</h3>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="resetEditorCode()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Тазалау
+                        </button>
+                        <button onclick="runCode()" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-green-600 hover:bg-green-700 transition shadow flex items-center space-x-1">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Іске қосу</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-700 h-[450px]">
+                    <!-- Editor Input -->
+                    <div class="flex flex-col h-full">
+                        <div class="bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-mono text-gray-500 border-b border-gray-200 dark:border-gray-700">HTML / CSS Коды</div>
+                        <textarea id="codeEditor" class="w-full flex-1 p-4 font-mono text-sm bg-gray-900 text-green-400 focus:outline-none resize-none" spellcheck="false"></textarea>
+                    </div>
+
+                    <!-- Output Preview -->
+                    <div class="flex flex-col h-full bg-white">
+                        <div class="bg-gray-50 dark:bg-gray-800 px-4 py-2 text-xs font-mono text-gray-500 border-b border-gray-200 dark:border-gray-700">Нәтижесі (Preview)</div>
+                        <iframe id="codePreview" class="w-full flex-1 bg-white border-0"></iframe>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-750">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-amber-500"></i> Теориялық Анықтамалар Тесті
+                    </h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">HTML және CSS негізгі терминдері мен анықтамалары бойынша тест</p>
+                </div>
+                <button onclick="closeQuiz()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl font-bold p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div id="quizContent" class="p-6 overflow-y-auto flex-1 space-y-6">
+                <!-- Quiz Step UI -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="quizFooter" class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-750 flex justify-between items-center">
+                <span id="quizProgress" class="text-xs font-medium text-gray-500">Сұрақ 1 / 15</span>
+                <div class="space-x-2">
+                    <button id="nextBtn" onclick="nextQuestion()" class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Келесі сұрақ <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Module Data
+        const modulesData = [
+            {
+                id: 1,
+                title: "1. HTML Негіздері",
+                description: "Веб-беттің құрылымы мен белгілеу тілінің теориялық негіздері.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">HTML дегеніміз не?</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300"><strong>HTML (HyperText Markup Language)</strong> — бұл веб-беттің құрылымын анықтайтын белгілеу тілі. Ол бағдарламалау тілі болып табылмайды, керісінше браузерге контентті қалай көрсету керектігін нұсқайды.</p>
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800 mb-4">
+                        <h4 class="font-bold text-blue-800 dark:text-blue-300 mb-1">Негізгі тегтер:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-sm text-blue-700 dark:text-blue-200">
+                            <li><code>&lt;html&gt;</code> — Құжаттың тамырлы элементі</li>
+                            <li><code>&lt;head&gt;</code> — Мета-ақпарат сақталатын бөлім</li>
+                            <li><code>&lt;body&gt;</code> — Беттің көрінетін контенті</li>
+                        </ul>
+                    </div>
+                `,
+                sampleCode: `<!DOCTYPE html>\n<html>\n<head>\n  <title>Бет тақырыбы</title>\n</head>\n<body>\n  <h1>Сәлем, Әлем!</h1>\n  <p>Бұл менің алғашқы веб-бетім.</p>\n</body>\n</html>`
+            },
+            {
+                id: 2,
+                title: "2. CSS Кіріспе",
+                description: "Веб-бетті безендіру және каскадты стиль кестелері.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">CSS дегеніміз не?</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300"><strong>CSS (Cascading Style Sheets)</strong> — бұл веб-беттің сыртқы келбетін безендіретін каскадты стиль кестелері. CSS арқылы түстерді, шрифтерді, шегіністерді және орналасуды басқарамыз.</p>
+                `,
+                sampleCode: `<style>\n  h1 {\n    color: #2563eb;\n    text-align: center;\n    font-family: sans-serif;\n  }\n</style>\n<h1>CSS арқылы безендірілген тақырып</h1>`
+            },
+            {
+                id: 3,
+                title: "3. Текстар және Сілтемелер",
+                description: "HTML форматындағы мәтіндер мен гиперсілтемелер.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Мәтіндер және Анкор Сілтемелер</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">HTML-де мәтінді форматтау үшін <code>&lt;p&gt;</code>, <code>&lt;h1&gt;-&lt;h6&gt;</code>, <code>&lt;strong&gt;</code> тегтері қолданылады. Ал сілтеме жасау үшін <code>&lt;a&gt;</code> тегі мен <code>href</code> атрибуты пайдаланылады.</p>
+                `,
+                sampleCode: `<a href="https://google.com" target="_blank" style="color: blue; text-decoration: underline;">Google торабына өту</a>`
+            },
+            {
+                id: 4,
+                title: "4. Кестелер мен Тізімдер",
+                description: "Деректерді реттелген және реттелмеген түрде көрсету.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Кестелер мен Тізімдер</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300"><code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, <code>&lt;th&gt;</code> тегтері кестелер құруға арналған. <code>&lt;th&gt;</code> — кестенің тақырыптық ұяшығы.</p>
+                `,
+                sampleCode: `<table border="1" style="width:100%; text-align:left;">\n  <tr>\n    <th>Аты</th>\n    <th>Мамандығы</th>\n  </tr>\n  <tr>\n    <td>Асан</td>\n    <td>Әзірлеуші</td>\n  </tr>\n</table>`
+            },
+            {
+                id: 5,
+                title: "5. CSS Селекторлары",
+                description: "Селекторлар: Класс, ID және элемент селекторлары.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Селекторлар ұғымы</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">Селектор — стиль ережесі қолданылатын HTML Элементін таңдап алатын көрсеткіш. Class үшін нүкте (.), ID үшін торша (#) қолданылады.</p>
+                `,
+                sampleCode: `<style>\n  .card { background: #f3f4f6; padding: 15px; border-radius: 8px; }\n  #main-title { color: crimson; }\n</style>\n<div class="card">\n  <h2 id="main-title">Арнайы тақырып</h2>\n</div>`
+            },
+            {
+                id: 6,
+                title: "6. CSS Box Model",
+                description: "Margin, Border, Padding және Content қабаттары.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Box Model (Бокс моделі)</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">Веб-беттегі әрбір элементті Content, Padding (ішкі шегініс), Border (жиек) және Margin (сыртқы шегініс) қабаттарынан тұратын төртбұрышты бокс ретінде қарастыру тұжырымдамасы.</p>
+                `,
+                sampleCode: `<div style="margin: 20px; border: 2px solid blue; padding: 15px; background: #e0f2fe;">\n  Бокс моделінің мысалы\n</div>`
+            },
+            {
+                id: 7,
+                title: "7. Түстер мен Фондар",
+                description: "HEX, RGB және CSS фон қасиеттері.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">HEX Түс форматы</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">HEX форматы қызыл, жасыл және көк түстердің қанықтылығын 16-лық санау жүйесінде (#RRGGBB) белгілеу әдісі.</p>
+                `,
+                sampleCode: `<div style="background-color: #1e293b; color: #38bdf8; padding: 20px; border-radius: 10px;">\n  HEX Түстері бар блок (#1e293b)\n</div>`
+            },
+            {
+                id: 8,
+                title: "8. Псевдокластар",
+                description: ":hover, :active және элементтердің күйлері.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Псевдокластар</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">Элементтің белгілі бір күйін (мысалы: меңзерді апарғандағы :hover) анықтайтын арнайы кілттік сөз.</p>
+                `,
+                sampleCode: `<style>\n  .btn { background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }\n  .btn:hover { background: #1d4ed8; }\n</style>\n<button class="btn">Меңзерді апарыңыз</button>`
+            },
+            {
+                id: 9,
+                title: "9. CSS Каскадтылық",
+                description: "Cascading және басымдық ережелері.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Каскадтылық ұғымы</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">Стильдердің иерархиясы мен басымдығы бойынша жоғарыдан төмен қарай ретпен қолданылу ережесі.</p>
+                `,
+                sampleCode: `<style>\n  p { color: red; }\n  p { color: blue; } /* Төменде орналасқандықтан blue қолданылады */\n</style>\n<p>Бұл мәтіннің түсі қандай болады?</p>`
+            },
+            {
+                id: 10,
+                title: "10. Атрибуттар мен Параметрлер",
+                description: "HTML Атрибуттары мен олардың сипаттамалары.",
+                content: `
+                    <h2 class="text-2xl font-bold mb-4">Атрибуттар</h2>
+                    <p class="mb-4 text-gray-600 dark:text-gray-300">Тегтің мүмкіндіктерін кеңейтетін және қосымша сипаттама беретін параметрлер (мысалы: src, href, alt, id, class).</p>
+                `,
+                sampleCode: `<img src="https://placehold.co/300x150/2563eb/white?text=HTML5" alt="Сурет сипаттамасы" style="border-radius: 8px;">`
+            }
+        ];
+
+        // Updated Quiz Data - 15 Definition-based Questions
+        const quizData = [
+            {
+                id: 1,
+                topic: "1. HTML Негіздері",
+                question: "HTML дегеніміз не?",
+                options: [
+                    "Веб-беттің құрылымын анықтайтын белгілеу тілі",
+                    "Деректер қорын басқаратын серверлік бағдарламалау тілі",
+                    "Операциялық жүйені құруға арналған төменгі деңгейлі тіл",
+                    "Браузерде динамикалық скрипттерді орындайтын тіл"
+                ],
+                correct: 0,
+                explain: "HTML (HyperText Markup Language) — бұл веб-беттің негізгі қаңқасы мен құрылымын қалыптастыратын гипермәтіндік белгілеу тілі."
+            },
+            {
+                id: 2,
+                topic: "2. CSS Кіріспе",
+                question: "CSS дегеніміз не?",
+                options: [
+                    "Серверге сұраныс жіберетін протокол",
+                    "Веб-беттің сыртқы келбетін безендіретін каскадты стиль кестелері",
+                    "Веб-сервердің конфигурациялық файлы",
+                    "Кодты қателерден тазалайтын компилятор"
+                ],
+                correct: 1,
+                explain: "CSS (Cascading Style Sheets) — HTML элементтерінің визуалды безендірілуін (түсін, шрифтін, орналасуын) реттейтін каскадты стиль кестелері."
+            },
+            {
+                id: 3,
+                topic: "1. HTML Негіздері",
+                question: "HTML-дегі тег (Tag) дегеніміз не?",
+                options: [
+                    "Веб-беттің жүктелу жылдамдығын өлшейтін индикатор",
+                    "Браузерге элементті қалай көрсету керектігін нұсқайтын арнайы бұрыштық жақшалар ішіндегі команда",
+                    "Суреттердің өлшемін кішірейтетін арнайы алгоритм",
+                    "CSS файлды HTML-ге қосатын жалғыз команда"
+                ],
+                correct: 1,
+                explain: "Тегтер бұрыштық жақшалар ішінде жазылады (<...>) және браузерге элементтің түрін (мәтін, сурет, сілтеме т.б.) анықтап береді."
+            },
+            {
+                id: 4,
+                topic: "10. Атрибуттар мен Параметрлер",
+                question: "Атрибут дегеніміз не?",
+                options: [
+                    "Тегтің мүмкіндіктерін кеңейтетін және қосымша сипаттама беретін параметр",
+                    "Тек CSS файлында жазылатын стиль ережесі",
+                    "Браузерді жабуға арналған пернелер комбинациясы",
+                    "Сервердегі деректер қорының кестесі"
+                ],
+                correct: 0,
+                explain: "Атрибуттар ашылу тегінің ішінде жазылып, элементке қосымша ақпарат немесе қасиеттер (мысалы: href, src, id) береді."
+            },
+            {
+                id: 5,
+                topic: "5. CSS Селекторлары",
+                question: "CSS-тегі Селектор дегеніміз не?",
+                options: [
+                    "Кодтағы қателерді автоматты түрде түзететін құрал",
+                    "Стиль ережесі қолданылатын HTML Элементін таңдап алатын көрсеткіш",
+                    "Веб-беттің сервердегі орналасқан мекенжайы",
+                    "Тек сандардан тұратын айнымалы"
+                ],
+                correct: 1,
+                explain: "Селектор — біз белгілі бір CSS стильдерін қолданғымыз келетін HTML элементін нұсқайды және белгілейді."
+            },
+            {
+                id: 6,
+                topic: "5. CSS Селекторлары",
+                question: "Класс (Class) селекторы дегеніміз не?",
+                options: [
+                    "Тек қана бір рет қолданылатын глобалды айнымалы",
+                    "Бірнеше элементке бірдей стиль қолдануға мүмкіндік беретін, нүкте (.) арқылы жазылатын белгі",
+                    "HTML құжатының тақырыбын анықтайтын тег",
+                    "Браузердің кэшін тазалайтын функция"
+                ],
+                correct: 1,
+                explain: "Класс селекторы нүктеден (.) басталады және оны бір беттегі бірнеше HTML элементіне ортақ стиль беру үшін қайталап қолдануға болады."
+            },
+            {
+                id: 7,
+                topic: "5. CSS Селекторлары",
+                question: "ID селекторы дегеніміз не?",
+                options: [
+                    "Барлық тегтерге автоматты түрде берілетін әдепкі стиль",
+                    "Веб-беттегі тек БІР бірегей элементті сәйкестендіретін, торша (#) арқылы жазылатын белгі",
+                    "Суреттерді жүктеуді жеделдететін формат",
+                    "Мәтінді курсивпен жазуға арналған тег"
+                ],
+                correct: 1,
+                explain: "ID селекторы торшадан (#) басталады және ол веб-бетте қайталанбайтын, тек бір бірегей элементке қолданылуы тиіс."
+            },
+            {
+                id: 8,
+                topic: "6. CSS Box Model",
+                question: "CSS Box Model (Бокс моделі) дегеніміз не?",
+                options: [
+                    "Веб-беттегі әрбір элементті Margin, Border, Padding және Content қабаттарынан тұратын төртбұрышты бокс ретінде қарастыру тұжырымдамасы",
+                    "Тек анимацияларды жасауға арналған CSS фреймворгі",
+                    "Браузерде виデオ қойғышты баптау экраны",
+                    "HTML формаларын тексеруге арналған модуль"
+                ],
+                correct: 0,
+                explain: "Box Model — CSS-тегі дизайн мен орналасудың негізі. Ол контенттен, ішкі өрістен, жиектен және сыртқы өрістен құралады."
+            },
+            {
+                id: 9,
+                topic: "6. CSS Box Model",
+                question: "Padding дегеніміз не?",
+                options: [
+                    "Элементтің сыртқы көршілес элементтермен арақашықтығы",
+                    "Элементтің ішкі контенті мен оның жиегі (border) арасындағы ІШКІ шегініс",
+                    "Мәтіннің астын сызатын сызық",
+                    "Қаріптің қалыңдығын көрсететін параметр"
+                ],
+                correct: 1,
+                explain: "Padding — элементтің өзінің шекарасы (border) мен оның ішіндегі контенті арасындағы ішкі бос кеңістік."
+            },
+            {
+                id: 10,
+                topic: "6. CSS Box Model",
+                question: "Margin дегеніміз не?",
+                options: [
+                    "Элементтің жиегі мен көршілес басқа элементтер арасындағы СЫРТҚЫ шегініс",
+                    "Элемент ішіндегі мәтіннің биіктігі",
+                    "Контенттің мөлдірлігін бақылайтын қасиет",
+                    "Ұяшықтарды біріктіретін HTML атрибуты"
+                ],
+                correct: 0,
+                explain: "Margin — бұл элементтің жиегінен тысқары орналасқан, басқа элементтермен арадағы сыртқы бос кеңістік."
+            },
+            {
+                id: 11,
+                topic: "8. Псевдокластар",
+                question: "CSS Псевдокласы (Pseudo-class) дегеніміз не?",
+                options: [
+                    "JavaScript арқылы жасалатын жаңа HTML тегі",
+                    "Элементтің белгілі бір күйін (мысалы: меңзерді апарғандағы :hover) анықтайтын арнайы кілттік сөз",
+                    "Тек мобильді құрылғыларға арналған стиль ережесі",
+                    "Қате жазылған CSS кодын жасыратын функция"
+                ],
+                correct: 1,
+                explain: "Псевдокласс двоеточиеден (:) кейін жазылып, элемент белгілі бір арнайы күйде болғанда (мысалы, :hover, :focus, :active) стиль қолданады."
+            },
+            {
+                id: 12,
+                topic: "3. Текстар және Сілтемелер",
+                question: "HTML-дегі Анкор (Anchor) сілтеме дегеніміз не?",
+                options: [
+                    "Ағымдағы веб-беттің белгілі бір ID-і бар нақты бөлігіне өтуді қамтамасыз ететін сілтеме",
+                    "Басқа сайтқа өтуді толығымен бұғаттайтын қауіпсіздік тегі",
+                    "Файлдарды жүктеп алуды тоқтататын батырма",
+                    "Тек суреттерді үлкейткіш құрал"
+                ],
+                correct: 0,
+                explain: "Анкорлық сілтемелер (#id арқылы) пайдаланушыны дәл сонымен белгіленген беттің белгілі бір бөлігіне бірден жылжытады."
+            },
+            {
+                id: 13,
+                topic: "7. Түстер мен Фондар",
+                question: "HEX түс форматы дегеніміз не?",
+                options: [
+                    "Қызыл, жасыл және көк түстердің қанықтылығын 16-лық санау жүйесінде (#RRGGBB) белгілеу форматы",
+                    "Тек ақ пен қара түсті білдіретін кодтау жүйесі",
+                    "Түстерді тек сөзбен (red, blue) жазу ережесі",
+                    "Түстерді пайыздық қатынаста есептейтін математикалық формула"
+                ],
+                correct: 0,
+                explain: "HEX форматы # таңбасынан кейін 6 алтылық цифрдан (0-9, A-F) тұрады, мұндағы әр екі белгі Red, Green, Blue қанықтылығын анықтайды."
+            },
+            {
+                id: 14,
+                topic: "4. Кестелер мен Тізімдер",
+                question: "HTML-дегі <th> тегінің анықтамасы?",
+                options: [
+                    "Кестенің қарапайым деректер ұяшығы",
+                    "Кестенің тақырыптық, жуан әрі орталанған ұяшығын анықтайтын тег",
+                    "Кестенің сыртқы жиегінің қалыңдығы",
+                    "Кестені жоятын арнайы тег"
+                ],
+                correct: 1,
+                explain: "<th> (Table Header) тегі кестенің баған немесе жол тақырыптарын анықтайды, ондағы мәтін әдепкіде жуан әрі ортадан жазылады."
+            },
+            {
+                id: 15,
+                topic: "9. CSS Каскадтылық",
+                question: "CSS-тегі Каскадтылық (Cascading) ұғымы дегеніміз не?",
+                options: [
+                    "Стильдердің иерархиясы мен басымдығы бойынша жоғарыдан төмен қарай ретпен қолданылу ережесі",
+                    "Кодты файлдарға бөліп сақтау тәсілі",
+                    "Тек анимациялардың жылдамдығын реттеу",
+                    "Браузер терезесінің өлшемін өзгерту мүмкіндігі"
+                ],
+                correct: 0,
+                explain: "Каскадтылық — бір элементке бірнеше стиль қолданылғанда, қай стильдің басымдыққа (приоритетке) ие болатынын анықтайтын ережелер жиынтығы."
+            }
+        ];
+
+        // Application State
+        let currentModuleIndex = 0;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedOption = null;
+
+        // Initialize Application
+        window.onload = function() {
+            renderModulesNav();
+            loadModule(0);
+            initTheme();
+        };
+
+        // Render Sidebar Navigation
+        function renderModulesNav() {
+            const nav = document.getElementById('moduleList');
+            nav.innerHTML = modulesData.map((mod, idx) => `
+                <button onclick="loadModule(${idx})" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition flex items-center justify-between ${idx === currentModuleIndex ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 font-semibold' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}">
+                    <span class="truncate">${mod.title}</span>
+                    <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+                </button>
+            `).join('');
+        }
+
+        // Load Specific Module Content
+        function loadModule(index) {
+            currentModuleIndex = index;
+            renderModulesNav();
+            const mod = modulesData[index];
+            const viewer = document.getElementById('contentViewer');
+            
+            viewer.innerHTML = `
+                <div class="space-y-4">
+                    <div class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Модуль ${mod.id} / ${modulesData.length}
+                    </div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white">${mod.title}</h1>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm border-b border-gray-100 dark:border-gray-700 pb-4">${mod.description}</p>
+                    <div class="prose dark:prose-invert max-w-none pt-2">
+                        ${mod.content}
+                    </div>
+                </div>
+            `;
+
+            // Load module sample code into editor
+            if(mod.sampleCode) {
+                document.getElementById('codeEditor').value = mod.sampleCode;
+                runCode();
+            }
+        }
+
+        // Live Code Editor Logic
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const preview = document.getElementById('codePreview');
+            const previewDoc = preview.contentDocument || preview.contentWindow.document;
+            previewDoc.open();
+            previewDoc.write(code);
+            previewDoc.close();
+        }
+
+        function resetEditorCode() {
+            document.getElementById('codeEditor').value = '';
+            runCode();
+        }
+
+        // Quiz System Functions
+        function openQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            selectedOption = null;
+            document.getElementById('quizModal').classList.remove('hidden');
+            renderQuizStep();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+        }
+
+        function renderQuizStep() {
+            const container = document.getElementById('quizContent');
+            const footer = document.getElementById('quizFooter');
+
+            if (currentQuizIndex >= quizData.length) {
+                // Quiz Complete View
+                container.innerHTML = `
+                    <div class="text-center py-8 space-y-4">
+                        <div class="w-20 h-20 bg-amber-100 dark:bg-amber-900/40 text-amber-500 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Тест аяқталды!</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Сіз 15 анықтамалық сұрақтың <strong>${quizScore}</strong> сұрағына дұрыс жауап бердіңіз.</p>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 max-w-md mx-auto overflow-hidden">
+                            <div class="bg-amber-500 h-full transition-all duration-500" style="width: ${(quizScore/quizData.length)*100}%"></div>
+                        </div>
+                        <button onclick="openQuiz()" class="mt-4 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition shadow">
+                            Қайта тапсыру
+                        </button>
+                    </div>
+                `;
+                footer.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            selectedOption = null;
+            const q = quizData[currentQuizIndex];
+
+            document.getElementById('quizProgress').innerText = `Сұрақ ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('nextBtn').disabled = true;
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${q.topic}</div>
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">${q.question}</h4>
+                    <div class="space-y-2.5 pt-2">
+                        ${q.options.map((opt, i) => `
+                            <button id="opt-${i}" onclick="selectOption(${i})" class="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 bg-white dark:bg-gray-750 transition flex items-start space-x-3 text-sm">
+                                <span class="w-6 h-6 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0 mt-0.5">${String.fromCharCode(65 + i)}</span>
+                                <span class="text-gray-700 dark:text-gray-200">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="explainBox" class="hidden p-4 rounded-xl text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800">
+                        <strong>Түсініктеме:</strong> ${q.explain}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectOption(index) {
+            if (selectedOption !== null) return; // Prevent changing after selection
+            selectedOption = index;
+            const q = quizData[currentQuizIndex];
+            const isCorrect = index === q.correct;
+
+            if (isCorrect) quizScore++;
+
+            // Update Option UI
+            q.options.forEach((_, i) => {
+                const btn = document.getElementById(`opt-${i}`);
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.classList.add('bg-green-50', 'dark:bg-green-900/30', 'border-green-500', 'text-green-800', 'dark:text-green-300');
+                } else if (i === index && !isCorrect) {
+                    btn.classList.add('bg-red-50', 'dark:bg-red-900/30', 'border-red-500', 'text-red-800', 'dark:text-red-300');
+                }
+            });
+
+            document.getElementById('explainBox').classList.remove('hidden');
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            renderQuizStep();
+        }
+
+        // Dark/Light Theme Switcher
+        const themeToggle = document.getElementById('themeToggle');
+        function initTheme() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+</html>
